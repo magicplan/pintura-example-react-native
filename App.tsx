@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import RNFS from 'react-native-fs';
@@ -18,6 +18,8 @@ function App(): JSX.Element {
   const [editorSource, setEditorSource] = useState<string | undefined>(
     undefined,
   );
+
+  const [undoStack, setUndoStack] = useState(0);
 
   const editorRef = useRef<PinturaEditor>(null);
 
@@ -51,6 +53,9 @@ function App(): JSX.Element {
           onProcess={({dest, imageState}) => {
             // dest is output file in dataURI format
             console.log('onProcess', imageState, dest);
+          }}
+          onWritehistory={() => {
+            setUndoStack((prev) => prev + 1);
           }}
         />
       )}
